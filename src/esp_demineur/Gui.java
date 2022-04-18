@@ -13,9 +13,10 @@ public class Gui extends JFrame{
 	int espace=15;
 	int mx=-100;
 	int my=-100;
+	int freres=0;
 	 Random rand=new Random();
 	int[][] mines=new int[16][9];
-	int[][] freres=new int [16][19];
+	int[][] voisins=new int [16][19];
 	boolean[][] reveler=new boolean[16][9];
 	boolean[][] drapeau=new boolean[16][9];
 	
@@ -33,9 +34,28 @@ public class Gui extends JFrame{
 			for (int j=0; j<9; j++) {
 				if(rand.nextInt(100)<20) {
 					mines[i][j]=1;
+					
 				}else {
 					mines[i][j]=0;
 				}
+				reveler[i][j]=false;
+				
+			}
+		}
+		for(int i=0; i<16; i++) {
+			for (int j=0; j<9; j++) {
+				freres=0;
+				for(int fx=0; fx<16; fx++) {
+					for (int fy=0; fy<9; fy++) {
+						//si c'est un frere qui nest pas miner
+						if(frere(i, j, fx, fy)==true) {
+							freres++;
+						}
+						
+						
+					}
+				}voisins[i][j]=freres;
+				
 				
 			}
 		}
@@ -66,9 +86,10 @@ public class Gui extends JFrame{
 			for(int i=0; i<16; i++) {
 				for (int j=0; j<9; j++) {
 					g.setColor(Color.gray);
-				/*	if(mines[i][j]==1) {
+					//verifier si la case es reveler
+					if(mines[i][j]==1) {
 						g.setColor(Color.yellow);
-					}*/
+					}
 					if(mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+26 && my< espace+j*80+26+80-2*espace) {
 						g.setColor(Color.red); 
 					}
@@ -92,17 +113,25 @@ public class Gui extends JFrame{
 		public void mouseMoved(java.awt.event.MouseEvent e) {
 			  mx=e.getX();
 			   my=e.getY();
-			System.out.print(mx+"le e e"+my);
+		//	System.out.print(mx+"le e e"+my);
 			
 		}
 		
 	}
 	public class Click implements MouseListener{
+	
 		//lorsquon fera un clique de souris
 		@Override
 		public void mouseClicked(java.awt.event.MouseEvent e) {
+			//mettons reveler a true pour la case cliquer
 			if(dansX()!=-1 && dansY()!=-1) {
-				System.out.print(mines[dansX()][dansY()]+"bon\n");
+				reveler[dansX()][dansY()]=true;
+				System.out.print("--------le nombre de frère non miné est "+ voisins[dansX()][dansY()]+"----");
+				
+			}
+			//a chaque fois que le user clique on appelle les fonction pour verifier si le clique a ete faite sur une case 
+			if(dansX()!=-1 && dansY()!=-1) {
+				//System.out.print(mines[dansX()][dansY()]+"bon\n");
 			}else System.out.print("mauvais\n");
 			
 		}
@@ -155,6 +184,13 @@ public class Gui extends JFrame{
 				}	
 			}
 		}return -1;
+		
+	}
+	public boolean frere(int i,int j, int fx,int fy) {
+		if(i-fx<2 && i-fx>-2 && j-fy<2 && j-fy>-2 && mines[fx][fy]==1 ) {
+			return true;
+		}
+		return false;
 		
 	}
 
