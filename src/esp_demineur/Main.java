@@ -11,7 +11,7 @@ Gui gui=new Gui();
 	@Override
 	public void run() {
 		while(true) {
-			gui.repaint();
+			gui.repaint() ;
 		}
 		
 	}
