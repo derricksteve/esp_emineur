@@ -47,14 +47,16 @@ public class Gui extends JFrame{
 				freres=0;
 				for(int fx=0; fx<16; fx++) {
 					for (int fy=0; fy<9; fy++) {
-						//si c'est un frere qui nest pas miner
+						//compter les frères miné
 						if(frere(i, j, fx, fy)==true) {
 							freres++;
 						}
 						
 						
 					}
-				}voisins[i][j]=freres;
+				}
+				//faire -1 si le clique a ete fait sur une mine
+				if(mines[i][j] ==1) voisins[i][j]=freres-1; else  voisins[i][j]=freres ;
 				
 				
 			}
@@ -87,11 +89,14 @@ public class Gui extends JFrame{
 				for (int j=0; j<9; j++) {
 					g.setColor(Color.gray);
 					//verifier si la case es reveler
+					if(reveler[i][j]==true) {
+						g.setColor(Color.white);
+					}
 					if(mines[i][j]==1) {
 						g.setColor(Color.yellow);
 					}
 					if(mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+26 && my< espace+j*80+26+80-2*espace) {
-						g.setColor(Color.red); 
+						g.setColor(Color.LIGHT_GRAY); 
 					}
 					g.fillRect( espace+i*60, espace+j*80, 80-2*espace,80-2*espace);
 					
@@ -159,7 +164,7 @@ public class Gui extends JFrame{
 		public void mouseExited(java.awt.event.MouseEvent e) {
 			System.out.print("Sortie\n");
 			
-		}
+		}f
 		
 		
 	}
