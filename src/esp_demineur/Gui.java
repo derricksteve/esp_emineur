@@ -23,16 +23,16 @@ public class Gui extends JFrame{
 		this.setContentPane(board);
 		Move move=new Move();
 		this.addMouseMotionListener(move);  
-		Click click=new Click();
+		Click click=new Click() ;
 		this.addMouseListener(click);
 		
 	
 	}
 	public class Board extends JPanel{
-		//fonction pour créer une composant
+		//fonction pour crÃ©er une composant
 		public void paintComponent(Graphics g) {
 			g.setColor(Color.DARK_GRAY);
-			//fonction pour créer un rectangle
+			//fonction pour crÃ©er un rectangle
 			g.fillRect(0,0,1280,800);
 			
 			for(int i=0; i<16; i++) {
