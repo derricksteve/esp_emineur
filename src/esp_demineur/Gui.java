@@ -13,6 +13,7 @@ public class Gui extends JFrame{
 	int espace=15;
 	int mx=-100;
 	int my=-100;
+	
 	public Gui() {
 		this.setTitle("ESP DEMINEUR");
 		//donner une taille a lecran
@@ -23,7 +24,7 @@ public class Gui extends JFrame{
 		this.setContentPane(board);
 		Move move=new Move();
 		this.addMouseMotionListener(move);  
-		Click click=new Click() ;
+		Click click=new Click();
 		this.addMouseListener(click);
 		
 	
