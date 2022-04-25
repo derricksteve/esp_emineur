@@ -146,9 +146,10 @@ public class Gui extends JFrame{
 						g.setColor(Color.LIGHT_GRAY); 
 					}//
 					g.fillRect( espace+i*60, espace+j*80+60, 80-2*espace,80-2*espace);
+				
 					if(reveler[i][j]==true) {
 						//g.setColor(Color.white);
-						if((mines[i][j]==0 || voisins[i][j]==3)) {
+						if(mines[i][j]==0 || voisins[i][j]==3) {
 							g.setColor(Color.white);
 							g.setFont(new Font("SansSerif",Font.BOLD,40));
 							g.drawString(Integer.toString(voisins[i][j]), i*60+27, j*80+112);
@@ -160,12 +161,18 @@ public class Gui extends JFrame{
 							g.fillRect(espace+i*60+5+5, espace+j*80+5+5+60, 30, 30);
 						}
 					}
+					if(nbre_click_droit[i][j]==2 && reveler[i][j]==false) {
+						g.setColor(Color.white);
+						g.setFont(new Font("SansSerif",Font.BOLD,40));
+						g.drawString("?", i*60+27, j*80+112);
+						
+					}
+					
 					
 					if(nbre_click_droit[i][j]==1) {
 						//inserer le drapeau dans la case
 					}	if(nbre_click_droit[i][j]==2) {
 						//inserer le point d'intérogation dans la case
-						voisins[i][j]=
 						g.drawString("?", i*60+27, j*80+112);
 					}
 					if(nbre_click_droit[i][j]==3) {
@@ -228,7 +235,7 @@ public class Gui extends JFrame{
 				//vicMesy=70;
 			}
 			//g.setFont(new Font)
-			//g.drawString(message, vicMesx	, vicMesy);
+			g.drawString(message, vicMesx	, vicMesy);
 			//g.setColor(Color.white);
 		}
 		
@@ -293,7 +300,7 @@ public class Gui extends JFrame{
 			   my=e.getY();
 			//mettons reveler a true pour la case cliquer
 		//	System.out.print("-----------cliquer----------\n");
-			if(dansX()!=-1 && dansY()!=-1) {
+			if(dansX()!=-1 && dansY()!=-1 && !(e.getButton() == java.awt.event.MouseEvent.BUTTON3) ) {
 				reveler[dansX()][dansY()]=true;
 				System.out.print("--------le nombre de frère non miné est "+ voisins[dansX()][dansY()]+"----\n");
 				
