@@ -10,9 +10,42 @@ import javax.swing.JPanel;
 import org.w3c.dom.events.MouseEvent;
 
 public class Gui extends JFrame{
-	int espace=12;
+	
+
+	int espace=11;
 	int mx=-100;
 	int my=-100;
+	public int sourirex=505;
+	public int sourirey=5;
+	
+	public int timex=800;
+	public int timey=5;
+	
+	public Date endDate;
+	
+	public int vicMesx=800;
+	public int vicMesy=-50;
+	
+	 String message="En cours";
+	
+	public boolean content=false;
+	public boolean victoire=false;
+	
+	public boolean perdu=false;
+	
+	Date startDate=new Date();
+	
+	public int sourisMilieux=sourirex+28;
+	public int sourisMilieuy=sourirey+28;
+	
+	public boolean resetter=false;
+	
+	
+	
+	
+	public long sec=0;
+
+	
 	
 	int freres=0;
 	 Random rand=new Random();
@@ -81,8 +114,12 @@ public class Gui extends JFrame{
 	
 	}
 	public class Board extends JPanel{
+		
+		
 		//fonction pour créer une composant
 		public void paintComponent(Graphics g) {
+			
+			//g.fillRect( 200, 200,80);
 			 g.setColor(Color.DARK_GRAY);
 			//fonction pour créer un rectangle
 			g.fillRect(0,0,1280,800);
@@ -91,9 +128,7 @@ public class Gui extends JFrame{
 				for (int j=0; j<9; j++) {
 					g.setColor(Color.gray);
 					//verifier si la case es reveler
-					if(mines[i][j]==1) {
-						g.setColor(Color.yellow);
-					}
+					
 					if(reveler[i][j]==true) {
 						g.setColor(Color.blue);
 						if(mines[i][j]==1) {
@@ -102,30 +137,88 @@ public class Gui extends JFrame{
 					
 					}
 				
-					if(mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+26 && my< espace+j*80+26+80-2*espace) {
+					if(mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+80 && my< espace+j*80+80+80-2*espace) {
 						g.setColor(Color.LIGHT_GRAY); 
-					}
-					g.fillRect( espace+i*60, espace+j*80, 80-2*espace,80-2*espace);
+					}//
+					g.fillRect( espace+i*60, espace+j*80+60, 80-2*espace,80-2*espace);
 					if(reveler[i][j]==true) {
 						//g.setColor(Color.white);
-						if(mines[i][j]==0) {
+						if(mines[i][j]==0 ) {
 							g.setColor(Color.white);
 							g.setFont(new Font("SansSerif",Font.BOLD,40));
-							g.drawString(Integer.toString(voisins[i][j]), i*60+27, j*80+55);
+							g.drawString(Integer.toString(voisins[i][j]), i*60+27, j*80+112);
 						}else {
 							g.setColor(Color.black);
-							g.fillRect(espace+i*60+8+5, espace+j*80+5, 20, 40);
-							g.fillRect(espace+i*60+5, espace+j*80+8+5, 40, 20);
-							g.fillRect(espace+i*60+5+5, espace+j*80+5+5, 30, 30);
+							g.fillRect(espace+i*60+8+5, espace+j*80+5+60, 20, 40);
+							g.fillRect(espace+i*60+5, espace+j*80+8+5+60, 40, 20);
+							g.fillRect(espace+i*60+5+5, espace+j*80+5+5+60, 30, 30);
+							g.fillRect(espace+i*60+5+5, espace+j*80+5+5+60, 30, 30);
 						}
 					}
 					
 					
 					
 				}
-			}	
+			}
+			g.setColor(Color.yellow);
+			g.fillOval(sourirex, sourirey, 55, 55);
+			g.setColor(Color.black);
+			g.fillOval(sourirex+12, sourirey+15, 10, 10);
+			g.fillOval(sourirex+37, sourirey+15, 10, 10);
+			if(content==true) {
+				g.fillRect(sourirex+12,sourirey+40,30 , 5);
+				g.fillRect(sourirex+10,sourirey+38,3 , 6);
+				g.fillRect(sourirex+40,sourirey+38,3 , 6);
+			}else {
+				g.fillRect(sourirex+12,sourirey+38,30 , 5);
+				g.fillRect(sourirex+10,sourirey+41,3 , 6);
+				g.fillRect(sourirex+40,sourirey+41,3 , 6);
+				
+			}
+			
+			//timer
+			g.setColor(Color.black);
+			g.fillRect(timex, timey, 150, 55);
+		sec=((new Date().getTime()-startDate.getTime())/1000);
+		if(sec>1000) {
+			sec=1000;
 		}
-	
+		g.setColor(Color.white);
+		if(victoire==true) {
+			g.setColor(Color.green);
+		}else if(perdu==true) g.setColor(Color.red);
+		
+		g.setFont(new Font("Tahoma",Font.PLAIN,60));
+		if(sec<10) {
+			g.drawString("00"+Long.toString(sec), timex	,timey+45);
+		}else if(sec<100) {
+			g.drawString("0"+Long.toString(sec), timex	,timey+45);
+		}else {
+			g.drawString(Long.toString(sec), timex	,timey+45);
+		}
+		//message a afficher lorsquil gagne
+		
+		if(victoire==true) {
+			g.setColor(Color.green);
+			message="Vous avec ganez";
+			
+		}else if(perdu==true) {
+			g.setColor(Color.red);
+			message="vous avez perdu";
+		}
+		if(victoire==true || perdu==true) {
+			vicMesy=-50 +(int)(new Date().getTime()-endDate.getTime())/10;
+			if(vicMesy>70) {
+				//vicMesy=70;
+			}
+			//g.setFont(new Font)
+			//g.drawString(message, vicMesx	, vicMesy);
+			//g.setColor(Color.white);
+		}
+		
+		 
+		}
+		
 
 	}
 	public class Move implements MouseMotionListener{
@@ -146,10 +239,22 @@ public class Gui extends JFrame{
 		
 	}
 	public class Click implements MouseListener{
+		
+		
 	
 		//lorsquon fera un clique de souris
 		@Override
 		public void mouseClicked(java.awt.event.MouseEvent e) {
+			
+			
+			if(e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+				System.out.println("---------------------------------le click droit-----------------------");
+	          }
+			
+		
+			
+			 mx=e.getX();
+			   my=e.getY();
 			//mettons reveler a true pour la case cliquer
 		//	System.out.print("-----------cliquer----------\n");
 			if(dansX()!=-1 && dansY()!=-1) {
@@ -162,6 +267,9 @@ public class Gui extends JFrame{
 				//System.out.print(mines[dansX()][dansY()]+"bon\n");
 			}else System.out.print("mauvais\n");
 			
+			if(intSouris()==true) {
+				resetAll();
+			}
 		}
 		//lorsquon va presser
 		@Override
@@ -191,10 +299,107 @@ public class Gui extends JFrame{
 		
 		
 	}
+	public void checkVitoryStatus() {
+		if(perdu==false) {
+			for(int i=0; i<16; i++) {
+				for (int j=0; j<9; j++) {
+					if(reveler[i][j]==true && mines[i][j]==1) {
+						perdu=true;
+						content=true;
+						endDate=new Date();
+						
+					}
+					
+				}
+			}
+		}
+		if(totalBoxeReveled()>=144-totoalMines() && victoire==false) {
+			
+			victoire=true;
+			endDate=new Date();
+		}
+		
+	}
+	public int totoalMines() {
+		int total=0;
+		for(int i=0; i<16; i++) {
+			for (int j=0; j<9; j++) {
+				if(mines[i][j]==1) {
+					total++;
+				}
+				
+			}
+		}
+		return total;
+		
+	}
+	public int  totalBoxeReveled() {
+		int total=0;
+		
+		for(int i=0; i<16; i++) {
+			for (int j=0; j<9; j++) {
+				if(reveler[i][j]==true) {
+				total++;
+				}
+				
+			}
+		}
+	
+		return total;
+		
+	}
+	public void resetAll() {
+		resetter=true;
+		startDate=new Date();
+		content=true;
+		victoire=false;
+		perdu=false;
+		 vicMesy=-50;
+		
+		
+		
+		for(int i=0; i<16; i++) {
+			for (int j=0; j<9; j++) {
+				if(   rand.nextInt(100)     <20) {
+					mines[i][j]=1;
+					
+				}else {
+					mines[i][j]=0;
+				}
+				reveler[i][j]=false;
+				drapeau[i][j]=false;
+				
+			}
+		}
+		for(int i=0; i<16; i++) {
+			for (int j=0; j<9; j++) {
+				freres=0;
+				for(int fx=0; fx<16; fx++) {
+					for (int fy=0; fy<9; fy++) {
+						//compter les frères miné
+						if(frere(i, j, fx, fy)==true) {
+							freres++;
+						}
+						
+						
+					}
+				}//faire -1 si le clique a ete fait sur une mine
+				if(mines[i][j]==1) voisins[i][j]=freres-1; else voisins[i][j]=freres;
+						
+			}
+		}
+		resetter=false;
+		
+	}
+	public boolean intSouris() {
+		int dif=(int)(Math.sqrt(Math.abs(mx-sourisMilieux)*Math.abs(mx-sourisMilieux)+Math.abs(my-sourisMilieuy)*Math.abs(my-sourisMilieuy)));
+		if(dif<28)return true;
+		return false;
+	}
 	public int dansX() {
 		for(int i=0; i<16; i++) {
 			for (int j=0; j<9; j++) {
-				if(    mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+26 && my< espace+j*80+26+80-2*espace) {
+				if(    mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+80 && my< espace+j*80+80+80-2*espace) {
 					return i;  
 				}
 				
@@ -207,7 +412,7 @@ public class Gui extends JFrame{
 	public int dansY() {
 		for(int i=0; i<16; i++) {
 			for (int j=0; j<9; j++) {
-				if(mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+26 && my< espace+j*80+26+80-2*espace) {
+				if(mx>=espace+i*60&& mx<espace+i*60+80-2*espace &&my>=espace+j*80+80 && my< espace+j*80+80+80-2*espace) {
 					return j;
 				}	
 			}

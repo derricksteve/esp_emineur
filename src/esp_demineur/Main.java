@@ -12,6 +12,11 @@ Gui gui=new Gui();
 	public void run() {
 		while(true) {
 			gui.repaint();
+			if(gui.resetter==false) {
+				gui.checkVitoryStatus();
+				//System.out.println("victory "+gui.victoire + gui.perdu );
+			}
+			
 		}
 		
 	}
