@@ -40,6 +40,8 @@ public class Gui extends JFrame{
 	
 	public boolean resetter=false;
 	
+	public int[][] nbre_click_droit= new int[16][9];
+	
 	
 	
 	
@@ -74,6 +76,7 @@ public class Gui extends JFrame{
 					mines[i][j]=0;
 				}
 				reveler[i][j]=false;
+				nbre_click_droit[i][j]=0;
 				
 			}
 		}
@@ -127,7 +130,9 @@ public class Gui extends JFrame{
 			for(int i=0; i<16; i++) {
 				for (int j=0; j<9; j++) {
 					g.setColor(Color.gray);
+					
 					//verifier si la case es reveler
+					
 					
 					if(reveler[i][j]==true) {
 						g.setColor(Color.blue);
@@ -143,7 +148,7 @@ public class Gui extends JFrame{
 					g.fillRect( espace+i*60, espace+j*80+60, 80-2*espace,80-2*espace);
 					if(reveler[i][j]==true) {
 						//g.setColor(Color.white);
-						if(mines[i][j]==0 ) {
+						if((mines[i][j]==0 || voisins[i][j]==3)) {
 							g.setColor(Color.white);
 							g.setFont(new Font("SansSerif",Font.BOLD,40));
 							g.drawString(Integer.toString(voisins[i][j]), i*60+27, j*80+112);
@@ -154,6 +159,17 @@ public class Gui extends JFrame{
 							g.fillRect(espace+i*60+5+5, espace+j*80+5+5+60, 30, 30);
 							g.fillRect(espace+i*60+5+5, espace+j*80+5+5+60, 30, 30);
 						}
+					}
+					
+					if(nbre_click_droit[i][j]==1) {
+						//inserer le drapeau dans la case
+					}	if(nbre_click_droit[i][j]==2) {
+						//inserer le point d'intérogation dans la case
+						voisins[i][j]=
+						g.drawString("?", i*60+27, j*80+112);
+					}
+					if(nbre_click_droit[i][j]==3) {
+						//inserer le point d'intérogation dans la case
 					}
 					
 					
@@ -248,7 +264,27 @@ public class Gui extends JFrame{
 			
 			
 			if(e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-				System.out.println("---------------------------------le click droit-----------------------");
+				
+				
+				if(dansX()!=-1 && dansY()!=-1) {
+					nbre_click_droit[dansX()][dansY()] +=1;
+					
+					
+					if(nbre_click_droit[dansX()][dansY()]==1) {
+						System.out.println("---------------------------------le click droit"+nbre_click_droit[dansX()][dansY()]+" -----------------------");
+						
+						
+					}else if(nbre_click_droit[dansX()][dansY()]==2) {
+						System.out.println("---------------------------------le click droit"+nbre_click_droit[dansX()][dansY()]+" -----------------------");
+						
+					}else if(nbre_click_droit[dansX()][dansY()]==3) {
+						System.out.println("---------------------------------le click droit"+nbre_click_droit[dansX()][dansY()]+" -----------------------");
+						nbre_click_droit[dansX()][dansY()]=0;
+					}
+					
+					System.out.print("--------le nombre de frère non miné est "+ voisins[dansX()][dansY()]+"----\n");
+					
+				}
 	          }
 			
 		
