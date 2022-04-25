@@ -171,13 +171,21 @@ public class Gui extends JFrame{
 					
 					if(nbre_click_droit[i][j]==1) {
 						//inserer le drapeau dans la case
+						g.setColor(Color.white);
+						g.fillRect( i*60+27, j*80+112, 20, 5);
+						g.fillRect( i*60+27+5, j*80+112-10, 10, 10);
+						g.fillRect( i*60+27+5, j*80+112-10-10, 10, 10);
+						g.fillRect( i*60+27+5, j*80+112-10-10-10, 10, 10);
+						g.setColor(Color.red);
+						g.fillRect( i*60+27+5-10, j*80+112-10-10-10, 10, 12);
+						
+						
+						
 					}	if(nbre_click_droit[i][j]==2) {
 						//inserer le point d'intérogation dans la case
 						g.drawString("?", i*60+27, j*80+112);
 					}
-					if(nbre_click_droit[i][j]==3) {
-						//inserer le point d'intérogation dans la case
-					}
+					
 					
 					
 					
