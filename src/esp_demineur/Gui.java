@@ -27,6 +27,8 @@ public class Gui extends JFrame{
 	public int vicMesy=-50;
 	
 	 String message="En cours";
+	 
+	 int[] i_cliquer= {0,1};
 	
 	public boolean content=false;
 	public boolean victoire=false;
@@ -67,6 +69,7 @@ public class Gui extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		
+		
 		for(int i=0; i<16; i++) {
 			for (int j=0; j<9; j++) {
 				if(   rand.nextInt(100)     <20) {
@@ -89,6 +92,7 @@ public class Gui extends JFrame{
 						if(frere(i, j, fx, fy)==true) {
 							freres++;
 						}
+						
 						
 						
 					}
@@ -247,6 +251,33 @@ public class Gui extends JFrame{
 			//g.setColor(Color.white);
 		}
 		
+		for(int i=0; i<1;i++) {
+			for (int j=0; j<1;j++ ) {
+				i=10;j=10;
+				
+				
+				System.out.print("--------------la valeur de i cliquer "+i_cliquer[0]+" la valeur de j cliquer "+i_cliquer[1]+"---------");
+				for(int fx=0; fx<16; fx++) {
+					for (int fy=0; fy<9; fy++) {
+						if(reveler[i_cliquer[0]][i_cliquer[1]]==true & voisins[i_cliquer[0]][i_cliquer[1]]==0) {
+							if(devoileFrere(i_cliquer[0], i_cliquer[1], fx, fy)==true) {
+								
+							
+								g.setColor(Color.white);
+								reveler[fx][fy]=true;
+								//reveler[fx][fy]
+							}
+						}
+						
+						
+						
+					}
+				}
+				
+						
+			}
+		}
+		
 		 
 		}
 		
@@ -310,6 +341,9 @@ public class Gui extends JFrame{
 		//	System.out.print("-----------cliquer----------\n");
 			if(dansX()!=-1 && dansY()!=-1 && !(e.getButton() == java.awt.event.MouseEvent.BUTTON3) ) {
 				reveler[dansX()][dansY()]=true;
+				i_cliquer[0]=dansX();
+				i_cliquer[1]=dansY();
+				
 				System.out.print("--------le nombre de frère non miné est "+ voisins[dansX()][dansY()]+"----\n");
 				
 			}
@@ -472,7 +506,19 @@ public class Gui extends JFrame{
 	}
 	public boolean frere(int i,int j, int fx,int fy) {
 		if(i-fx<2 && i-fx>-2 && j-fy<2 && j-fy>-2 && mines[fx][fy]==1 ) {
+			
+			 
+			
 			return true;
+		}
+		return false;
+		
+	}
+	public boolean devoileFrere(int i,int j, int fx,int fy) {
+		if(i-fx<2 && i-fx>-2 && j-fy<2 && j-fy>-2 ) {
+			
+			return true;
+			 	
 		}
 		return false;
 		
