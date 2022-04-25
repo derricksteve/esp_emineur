@@ -20,6 +20,7 @@ public class Gui extends JFrame{
 	
 	public int timex=800;
 	public int timey=5;
+	public int nbre_de_mine_a_decouvrir=0;
 	
 	public Date endDate;
 	
@@ -63,17 +64,18 @@ public class Gui extends JFrame{
 	
 	
 	public Gui() {
-		this.setTitle("MARIAME");
+		this.setTitle("ESP-DEMINEUR");
 		//donner une taille a lecran
 		this.setSize(1286,830);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
+		mines[0][0]=0;
 		
-		
-		for(int i=0; i<16; i++) {
-			for (int j=0; j<9; j++) {
+		for(int i=1; i<16; i++) {
+			for (int j=1; j<9; j++) {
 				if(   rand.nextInt(100)     <20) {
 					mines[i][j]=1;
+					nbre_de_mine_a_decouvrir+=1;
 					
 				}else {
 					mines[i][j]=0;
@@ -195,12 +197,17 @@ public class Gui extends JFrame{
 					
 				}
 			}
-			g.setColor(Color.yellow);
-			g.fillOval(sourirex, sourirey, 55, 55);
+			g.setColor(Color.white);
+			g.fillRect(sourirex, sourirey, 55, 55);
+			g.setFont(new Font("SansSerif",Font.BOLD,20));
+			g.drawString("nombre de mine à découvrir", sourirex-400, sourirey+25);
+			g.drawString(Integer.toString(nbre_de_mine_a_decouvrir), sourirex-120, sourirey+25);
 			g.setColor(Color.black);
-			g.fillOval(sourirex+12, sourirey+15, 10, 10);
-			g.fillOval(sourirex+37, sourirey+15, 10, 10);
-			if(content==true) {
+			g.fillRect(sourirex+12,sourirey+13,30 , 25);
+		//	g.fillRect(sourirex+10,sourirey+15,30 , 5);
+			//g.fillRect(sourirex+40,sourirey+20,30 , 5);
+			
+			/*if(content==true) {
 				g.fillRect(sourirex+12,sourirey+40,30 , 5);
 				g.fillRect(sourirex+10,sourirey+38,3 , 6);
 				g.fillRect(sourirex+40,sourirey+38,3 , 6);
@@ -209,12 +216,19 @@ public class Gui extends JFrame{
 				g.fillRect(sourirex+10,sourirey+41,3 , 6);
 				g.fillRect(sourirex+40,sourirey+41,3 , 6);
 				
-			}
+			}*/
 			
 			//timer
 			g.setColor(Color.black);
 			g.fillRect(timex, timey, 150, 55);
-		sec=((new Date().getTime()-startDate.getTime())/1000);
+			//arretons le temps lorsque l'utilisateur perd
+			if( perdu==false && nbre_de_mine_a_decouvrir >0) {
+				sec=  ((new Date().getTime()-startDate.getTime())/1000);
+			}else {
+				g.setColor(Color.green);
+				message="Vous avez ganez";
+			}
+		
 		if(sec>1000) {
 			sec=1000;
 		}
@@ -233,15 +247,16 @@ public class Gui extends JFrame{
 		}
 		//message a afficher lorsquil gagne
 		
-		if(victoire==true) {
+		if(victoire==true || nbre_de_mine_a_decouvrir==0) {
 			g.setColor(Color.green);
-			message="Vous avec ganez";
+			message="Vous avez ganez";
 			
 		}else if(perdu==true) {
 			g.setColor(Color.red);
+			
 			message="vous avez perdu";
 		}
-		if(victoire==true || perdu==true) {
+		if(victoire==true || perdu==true || nbre_de_mine_a_decouvrir==0) {
 			vicMesy=-50 +(int)(new Date().getTime()-endDate.getTime())/10;
 			if(vicMesy>70) {
 				//vicMesy=70;
@@ -259,7 +274,7 @@ public class Gui extends JFrame{
 				System.out.print("--------------la valeur de i cliquer "+i_cliquer[0]+" la valeur de j cliquer "+i_cliquer[1]+"---------");
 				for(int fx=0; fx<16; fx++) {
 					for (int fy=0; fy<9; fy++) {
-						if(reveler[i_cliquer[0]][i_cliquer[1]]==true & voisins[i_cliquer[0]][i_cliquer[1]]==0) {
+						if(mines[i_cliquer[0]][i_cliquer[1]]==0&& reveler[i_cliquer[0]][i_cliquer[1]]==true & voisins[i_cliquer[0]][i_cliquer[1]]==0) {
 							if(devoileFrere(i_cliquer[0], i_cliquer[1], fx, fy)==true) {
 								
 							
@@ -307,18 +322,21 @@ public class Gui extends JFrame{
 		//lorsquon fera un clique de souris
 		@Override
 		public void mouseClicked(java.awt.event.MouseEvent e) {
+			//checkVitoryStatus();
 			
 			
 			if(e.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+				
 				
 				
 				if(dansX()!=-1 && dansY()!=-1) {
 					nbre_click_droit[dansX()][dansY()] +=1;
 					
 					
+					
 					if(nbre_click_droit[dansX()][dansY()]==1) {
 						System.out.println("---------------------------------le click droit"+nbre_click_droit[dansX()][dansY()]+" -----------------------");
-						
+						nbre_de_mine_a_decouvrir-=1;
 						
 					}else if(nbre_click_droit[dansX()][dansY()]==2) {
 						System.out.println("---------------------------------le click droit"+nbre_click_droit[dansX()][dansY()]+" -----------------------");
@@ -326,6 +344,7 @@ public class Gui extends JFrame{
 					}else if(nbre_click_droit[dansX()][dansY()]==3) {
 						System.out.println("---------------------------------le click droit"+nbre_click_droit[dansX()][dansY()]+" -----------------------");
 						nbre_click_droit[dansX()][dansY()]=0;
+						nbre_de_mine_a_decouvrir+=1;
 					}
 					
 					System.out.print("--------le nombre de frère non miné est "+ voisins[dansX()][dansY()]+"----\n");
@@ -385,7 +404,11 @@ public class Gui extends JFrame{
 		
 	}
 	public void checkVitoryStatus() {
-		if(perdu==false) {
+		if(nbre_de_mine_a_decouvrir==0) {
+			victoire=true;
+			endDate=new Date();
+		}
+		if(perdu==false ) {
 			for(int i=0; i<16; i++) {
 				for (int j=0; j<9; j++) {
 					if(reveler[i][j]==true && mines[i][j]==1) {
@@ -398,10 +421,11 @@ public class Gui extends JFrame{
 				}
 			}
 		}
-		if(totalBoxeReveled()>=144-totoalMines() && victoire==false) {
+		if(  (totalBoxeReveled()>=144-totoalMines() && victoire==false) || nbre_de_mine_a_decouvrir==0  ) {
 			
 			victoire=true;
 			endDate=new Date();
+		
 		}
 		
 	}
@@ -522,6 +546,16 @@ public class Gui extends JFrame{
 		}
 		return false;
 		
+	}
+	public void devoileAll() {
+		for(int i=0; i<16; i++) {
+			for (int j=0; j<9; j++) {
+				
+				reveler[i][j]=true;
+				
+				
+			}
+		}
 	}
 
 }
